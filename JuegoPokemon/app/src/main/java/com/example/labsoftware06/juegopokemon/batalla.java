@@ -3,8 +3,11 @@ package com.example.labsoftware06.juegopokemon;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -18,12 +21,19 @@ import org.json.JSONObject;
 
 import java.util.Random;
 
-public class batalla extends AppCompatActivity {
+public class batalla extends AppCompatActivity implements View.OnClickListener{
 
+    int sal1 = 100;
+    int sal2 = 100;
+    Button bt2;
     TextView pokemon1_nombre;
     TextView pokemon2_nombre;
     ImageView pokemon1_imagen;
     ImageView pokemon2_imagen;
+    TextView healt1;
+    TextView healt2;
+
+
 
 
     @Override
@@ -31,14 +41,20 @@ public class batalla extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_batalla);
 
-
         pokemon1_nombre= (TextView) findViewById(R.id.pokemon1_nombre);
         pokemon2_nombre= (TextView) findViewById(R.id.pokemon2_nombre);
         pokemon1_imagen= (ImageView) findViewById(R.id.pokemon1);
         pokemon2_imagen= (ImageView) findViewById(R.id.pokemon2);
+        healt1 = (TextView) findViewById(R.id.salud);
+        healt2 = (TextView)findViewById(R.id.salud2);
+        bt2 = (Button)findViewById(R.id.btatac);
+        bt2.setOnClickListener(this);
         Random random=new Random();
-        int id1= (int) (Math.random()*500);
-        int id2=(int) (Math.random()*500);
+        int id1= (int) (Math.random()*700);
+        int id2=(int) (Math.random()*700);
+        healt1.setText(String.valueOf(sal1));
+        healt2.setText(String.valueOf(sal2));
+
         traernombre(id1,pokemon1_nombre);
         traernombre(id2,pokemon2_nombre);
 
@@ -136,6 +152,44 @@ public class batalla extends AppCompatActivity {
 
 
 
+    }
+    @Override
+    public void onClick(View v) {
+        //Un id para implementar con un swith de 1 caso
+        int id;
+        id = v.getId();
+        switch (id)
+        {
+            case R.id.btatac:
+
+                int id1 = (int) (Math.random() * 40);
+                int id2 = (int) (Math.random() * 40);
+
+                sal1= sal1 - id1;
+                healt1.setText(String.valueOf(sal1));
+                sal2 = sal2 - id2;
+                healt2.setText(String.valueOf(sal2));
+
+                if (Integer.parseInt(healt1.getText().toString()) <= 0){
+                    bt2.setEnabled(false);
+                    Toast toast1 =
+                            Toast.makeText(getApplicationContext(),
+                                    "Fin del Juego, Ganaste", Toast.LENGTH_SHORT);
+
+                    toast1.show();
+                }else if(Integer.parseInt(healt2.getText().toString()) <= 0) {
+                    bt2.setEnabled(false);
+                    Toast toast1 =
+                            Toast.makeText(getApplicationContext(),
+                                    "Fin del Juego, Perdiste", Toast.LENGTH_SHORT);
+
+                    toast1.show();
+                }else {
+
+                }
+
+                break;
+        }
     }
 
 }
